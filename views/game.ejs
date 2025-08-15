@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/chessgame.css" />
+</head>
+
+<body>
+    <img src="/images/chess.png" alt="Chess Logo" class="logo" />
+    <div id="game-message" class="left-side-message">A non-descriminative chess app</div>
+
+
+    <div class="flex flex-col items-center justify-center min-h-screen bg-zinc-900">
+        <div id="message-area" class="h-12 flex items-center"></div>
+        <div class="relative inline-block bg-zinc-900 rounded-lg shadow-lg p-2">
+
+            <!-- Files top: 8-column grid -->
+            <div class="grid grid-cols-8 text-xs text-gray-300 select-none font-semibold tracking-wide mb-0.5">
+                <span class="flex justify-center">a</span>
+                <span class="flex justify-center">b</span>
+                <span class="flex justify-center">c</span>
+                <span class="flex justify-center">d</span>
+                <span class="flex justify-center">e</span>
+                <span class="flex justify-center">f</span>
+                <span class="flex justify-center">g</span>
+                <span class="flex justify-center">h</span>
+            </div>
+
+            <div class="flex">
+                <!-- Ranks left: 8-row grid -->
+                <div class="grid grid-rows-8 text-xs text-gray-300 select-none font-semibold tracking-wide mr-1">
+                    <span class="flex items-center justify-center">8</span>
+                    <span class="flex items-center justify-center">7</span>
+                    <span class="flex items-center justify-center">6</span>
+                    <span class="flex items-center justify-center">5</span>
+                    <span class="flex items-center justify-center">4</span>
+                    <span class="flex items-center justify-center">3</span>
+                    <span class="flex items-center justify-center">2</span>
+                    <span class="flex items-center justify-center">1</span>
+                </div>
+
+                <!-- Chessboard itself -->
+                <div class="chessboard border-2 border-gray-600 rounded- lg shadow-md"></div>
+            </div>
+
+            <!-- Files bottom: same as top -->
+            <div class="grid grid-cols-8 text-xs text-gray-300 select-none font-semibold tracking-wide mt-0.5">
+                <span class="flex justify-center">a</span>
+                <span class="flex justify-center">b</span>
+                <span class="flex justify-center">c</span>
+                <span class="flex justify-center">d</span>
+                <span class="flex justify-center">e</span>
+                <span class="flex justify-center">f</span>
+                <span class="flex justify-center">g</span>
+                <span class="flex justify-center">h</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <h1 class="right-side-message text-rose-500">
+        <p class="text-white">joining a game...</p>
+    </h1>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"
+        integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const socket = io();
+        const roomId = "<%= roomId %>";
+        const playerName = prompt("Enter your nickname :") || "Guest";
+
+        if (roomId === 'random') {
+            socket.emit('joinRandom');
+        } else {
+            socket.emit('joinRoomByName', { roomId, playerName });
+        }
+    </script>
+    <script src="/js/chessgame.js"></script>
+
+</body>
+
+
+</html>

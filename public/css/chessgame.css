@@ -1,0 +1,163 @@
+body {
+    background-color: #18181b; /* matches bg-zinc-900 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* full screen height */
+    margin: 0;        /* remove browser default spacing */
+}
+
+.chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    gap: 2px;
+    border: 4px solid #485563;
+    border-radius: 12px;
+    background: #485563;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #29323c, #485563);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.square.light {
+background: #304352;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #d7d2cc, #304352);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #d7d2cc, #304352); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  box-shadow: inset 0 0 8px #fff8e1;
+}
+
+.square.dark {
+background: #000000;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  box-shadow: inset 0 0 8px #6b4a2c;
+}
+
+.square:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 12px 3px #f39c12;
+}
+
+.piece {
+  font-size: 36px;
+  transition: transform 0.2s ease;
+  user-select: none;
+  pointer-events: auto;
+}
+
+/* Set default colors for all pieces first */
+.piece.white {
+  color: #f9f9f9;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
+.piece.black {
+  color: #222222;
+  text-shadow: 1px 1px 4px rgba(255,255,255,0.6);
+}
+
+.piece:active {
+  transform: scale(1.2);
+  cursor: grabbing;
+}
+
+/* Override colors specifically for pawns - these must be last */
+.chessboard .piece.white.pawn {
+  color: #e4c281 !important;
+}
+
+.chessboard .piece.black.pawn {
+  color: #b3473f !important;
+}
+
+/* Drag over highlight */
+.square.dragover {
+  box-shadow: 0 0 15px 5px #ffffffff inset;
+  filter: brightness(1.3);
+}
+
+.right-side-message {
+  position: fixed;             /* stays pinned on screen */
+  top: 50%;                     /* middle vertically */
+  right: 1rem;                  /* 16px from right edge */
+  transform: translateY(-50%);  /* perfect vertical center */
+  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black BG */
+  color: #22c55e;               /* Tailwind's green-500 */
+  padding: 0.5rem 1rem;         /* 8px TB, 16px LR */
+  border-radius: 0.25rem;       /* rounded corners */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3); /* soft shadow */
+  z-index: 50;                  /* on top of other elements */
+  font-size: 1.25rem;           /* ~text-xl */
+  font-weight: bold;
+  text-align: center;
+    white-space: normal;         /* allow wrapping */
+  word-wrap: break-word;       /* wrap long words */
+  overflow-wrap: anywhere;     /* break very long strings */
+  max-width: 200px;            /* limit width so it doesn't cross the board */
+}
+
+/* Default piece colors */
+.piece.white {
+  color: #f9f9f9;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+.piece.black {
+  color: #222;
+  text-shadow: 1px 1px 4px rgba(255,255,255,0.6);
+}
+
+/* Pawn overrides — must come after defaults */
+.piece.white.pawn {
+  color: #e4c281 !important; /* gold for white pawns */
+}
+.piece.black.pawn {
+  color: #b3473f !important; /* reddish brown for black pawns */
+}
+
+.logo {
+  position: absolute;       /* position relative to nearest positioned ancestor */
+  top: 0.5rem;              /* small offset from top */
+  left: 0.5rem;             /* small offset from left */
+  z-index: 100;             /* ensure it stays above the board */
+  background-color: transparent; /* or any background if needed */
+  pointer-events: none;     /* so it doesn't block interactions */
+  user-select: none;        /* optional: prevent text selection */
+  /* Add width/height as needed */
+  width: 280px;             /* adjust as per your logo size */
+  height: auto;             /* keep aspect ratio */
+}
+
+.left-side-message {
+  position: fixed;
+  top: 50%;                /* center vertically */
+  left: 1rem;              /* 1rem from the left edge */
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: #ffffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 50;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.chessboard-container .ranks span {
+  line-height: 2.25rem; /* Adjust to your square size */
+}

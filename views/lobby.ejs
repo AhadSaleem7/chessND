@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/chessgame.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-zinc-900 flex items-center justify-center h-screen">
+    <img src="/images/chess.png" alt="Chess Logo" class="logo" />
+    <div id="game-message" class="left-side-message">A non-descriminative chess app</div>
+    <div class=" fixed land bg-gradient-to-br from-[#352f44] via-[#5c5470] to-[#b9b4c7] p-6 rounded-lg shadow-lg w-96">
+        <h1 class="text-white text-2xl mb-4 text-center">Welcome !!!</h1>
+
+        <input id="playerName" type="text" placeholder="Your Name" class="w-full p-2 rounded mb-3">
+
+        <div class="flex gap-2">
+            <button id="createBtn" class="flex-1 bg-green-500 p-2 rounded text-white">Create Room</button>
+            <button id="joinBtn" class="flex-1 bg-blue-500 p-2 rounded text-white">Join Room</button>
+            <button id="randomBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">
+                Play Random Game
+            </button>
+
+        </div>
+
+        <input id="friendName" type="text" placeholder="Friend's Name" class="w-full p-2 rounded mt-3 hidden">
+
+    </div>
+    <!-- Lottie script -->
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+
+    <!-- Your animation -->
+    <dotlottie-wc src="https://lottie.host/03f5918a-9a17-42cb-a62b-42b990ca54d3/2zGKhBzY8c.lottie"
+        class="fixed right-10 top-1/2 -translate-y-1/2 w-80 h-80 z-50" speed="1" autoplay loop></dotlottie-wc>
+
+
+    <script>
+        const playerNameEl = document.getElementById('playerName');
+        localStorage.setItem('playerName', playerNameEl.value);
+        const friendNameEl = document.getElementById('friendName');
+        localStorage.setItem('friend', friendNameEl.value);
+        const createBtn = document.getElementById('createBtn');
+        const joinBtn = document.getElementById('joinBtn');
+        document.getElementById('randomBtn').addEventListener('click', () => {
+            window.location.href = `/game/random/${encodeURIComponent(playerNameEl.value.trim())}`;
+        });
+        createBtn.addEventListener('click', () => {
+            const name = playerNameEl.value.trim();
+            if (!name) return alert('Enter your name');
+            window.location.href = `/game/${encodeURIComponent(name)}`;
+        });
+
+        joinBtn.addEventListener('click', () => {
+            friendNameEl.classList.remove('hidden');
+            const name = playerNameEl.value.trim();
+            const friend = friendNameEl.value.trim();
+            if (friend) {
+                window.location.href = `/game/${encodeURIComponent(friend)}`;
+            }
+        });
+    </script>
+</body>
+
+</html>
