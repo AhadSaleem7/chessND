@@ -155,11 +155,11 @@ socket.on('playerDisconnected', (socketId) => {
 socket.on('gameEnd', ({ result, winner, reason }) => {
     const area = document.getElementById('message-area');
     if (result === 'checkmate') {
-        area.innerHTML = `<span class="text-emerald-400 text-3xl ">${winner} wins by checkmate!</span>`;
+        area.innerHTML = `<span class="text-white text-3xl ">${winner} wins by checkmate!</span>`;
     } else if (result === 'draw') {
-        area.innerHTML = `<span class="text-amber-200 text-2xl ">Draw: ${reason}</span>`;
+        area.innerHTML = `<span class="text-white text-2xl ">Draw: ${reason}</span>`;
     } else {
-        area.innerHTML = `<span class="text-gray-400 text-xl ">Game ended: ${reason}</span>`;
+        area.innerHTML = `<span class="text-white text-xl ">Game ended: ${reason}</span>`;
     }
 });
 
