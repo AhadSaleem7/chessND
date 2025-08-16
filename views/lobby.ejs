@@ -1,57 +1,94 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>
-        <%= title %>
-    </title>
-    <link rel="icon" href="/images/favicon.ico">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+    <link rel="icon" href="/images/favicon.ico" />
     <link rel="stylesheet" href="/css/chessgame.css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 overflow-x-auto relative">
 
-<body class="bg-zinc-900 flex items-center justify-center h-screen">
+    <!-- Logo - Enhanced -->
     <img src="/images/chess.png" alt="Chess Logo" class="logo" />
+    
+    <!-- Left side message - Enhanced -->
     <div id="game-message" class="left-side-message">A non-descriminative chess app</div>
-    <div class=" fixed land bg-gradient-to-br from-[#352f44] via-[#5c5470] to-[#b9b4c7] p-6 rounded-lg shadow-lg w-96">
-        <h1 class="text-white text-2xl mb-4 text-center">Welcome !!!</h1>
 
-        <input id="playerName" type="text" placeholder="Your Name" class="w-full p-2 rounded mb-3">
+    <!-- Main lobby container - Ultra Premium -->
+    <div class="w-full max-w-sm sm:max-w-lg md:max-w-xl mx-auto mt-8 sm:mt-12">
+        <div class="board-container
+                    backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl flex flex-col items-stretch border-2 border-white/20">
+            
+            <h1 class="text-white text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 text-center font-bold drop-shadow-lg">Welcome !!!</h1>
 
-        <div class="flex gap-2">
-            <button id="createBtn" class="flex-1 bg-green-500 p-2 rounded text-white">Create Room</button>
-            <button id="joinBtn" class="flex-1 bg-blue-500 p-2 rounded text-white">Join Room</button>
-            <button id="randomBtn" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">
+            <input id="playerName" 
+                   type="text" 
+                   placeholder="Your Name" 
+                   class="w-full p-3 sm:p-4 text-base sm:text-lg rounded-xl mb-4 sm:mb-6 text-black font-medium bg-white/90 backdrop-blur border-2 border-white/30 focus:border-blue-400 focus:outline-none transition-all duration-300"
+                   autocomplete="off" />
+
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <button id="createBtn" 
+                        class="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 p-3 sm:p-4 rounded-xl text-white text-base sm:text-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Create Room
+                </button>
+                <button id="joinBtn" 
+                        class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 p-3 sm:p-4 rounded-xl text-white text-base sm:text-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Join Room
+                </button>
+            </div>
+
+            <button id="randomBtn" 
+                    class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-4 py-3 sm:py-4 rounded-xl w-full text-base sm:text-lg font-bold transition-all duration-300 mb-4 shadow-lg hover:shadow-xl transform hover:scale-105">
                 Play Random Game
             </button>
 
+            <input id="friendName" 
+                   type="text" 
+                   placeholder="Friend's Name" 
+                   class="w-full p-3 sm:p-4 text-base sm:text-lg rounded-xl text-black font-medium bg-white/90 backdrop-blur border-2 border-white/30 focus:border-purple-400 focus:outline-none transition-all duration-300 hidden"
+                   autocomplete="off" />
         </div>
-
-        <input id="friendName" type="text" placeholder="Friend's Name" class="w-full p-2 rounded mt-3 hidden">
-
     </div>
-    <!-- Lottie script -->
+
+    <!-- Enhanced Lottie Animation -->
     <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
-
-    <!-- Your animation -->
-    <dotlottie-wc src="https://lottie.host/03f5918a-9a17-42cb-a62b-42b990ca54d3/2zGKhBzY8c.lottie"
-        class="fixed right-10 top-1/2 -translate-y-1/2 w-80 h-80 z-50" speed="1" autoplay loop></dotlottie-wc>
-
+    <dotlottie-wc 
+        src="https://lottie.host/03f5918a-9a17-42cb-a62b-42b990ca54d3/2zGKhBzY8c.lottie"
+        class="fixed right-2 bottom-2 w-20 h-20 sm:right-4 sm:bottom-4 sm:w-28 sm:h-28 md:right-8 md:top-1/2 md:-translate-y-1/2 md:w-48 md:h-48 lg:w-60 lg:h-60 z-40 opacity-70 hover:opacity-100 transition-opacity duration-300"
+        speed="1" 
+        autoplay 
+        loop>
+    </dotlottie-wc>
 
     <script>
         const playerNameEl = document.getElementById('playerName');
-        localStorage.setItem('playerName', playerNameEl.value);
         const friendNameEl = document.getElementById('friendName');
-        localStorage.setItem('friend', friendNameEl.value);
         const createBtn = document.getElementById('createBtn');
         const joinBtn = document.getElementById('joinBtn');
-        document.getElementById('randomBtn').addEventListener('click', () => {
+        const randomBtn = document.getElementById('randomBtn');
+
+        playerNameEl.value = localStorage.getItem('playerName') || '';
+        friendNameEl.value = localStorage.getItem('friendName') || '';
+
+        playerNameEl.addEventListener('input', () => {
+            localStorage.setItem('playerName', playerNameEl.value.trim());
+        });
+
+        friendNameEl.addEventListener('input', () => {
+            localStorage.setItem('friendName', friendNameEl.value.trim());
+        });
+
+        randomBtn.addEventListener('click', () => {
+            if (!playerNameEl.value.trim()) return alert('Enter your name');
             window.location.href = `/game/random/${encodeURIComponent(playerNameEl.value.trim())}`;
         });
+
         createBtn.addEventListener('click', () => {
-            const name = playerNameEl.value.trim();
-            if (!name) return alert('Enter your name');
-            window.location.href = `/game/${encodeURIComponent(name)}`;
+            if (!playerNameEl.value.trim()) return alert('Enter your name');
+            window.location.href = `/game/${encodeURIComponent(playerNameEl.value.trim())}`;
         });
 
         joinBtn.addEventListener('click', () => {
@@ -64,5 +101,4 @@
         });
     </script>
 </body>
-
 </html>

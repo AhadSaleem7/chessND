@@ -16,11 +16,22 @@ app.get('/', (req, res) => {
   res.render('lobby', { title: 'ChessND - Lobby' });
 });
 
+// Random Game Page (must come before general game route)
+app.get('/game/random/:playerName', (req, res) => {
+  const roomId = 'random-' + Date.now();
+  res.render('game', {
+    title: 'ChessND - Random Game',
+    roomId: roomId,
+    isRandom: true
+  });
+});
+
 // Game Page
 app.get('/game/:roomId', (req, res) => {
   res.render('game', {
     title: 'ChessND - Game',
-    roomId: req.params.roomId
+    roomId: req.params.roomId,
+    isRandom: false
   });
 });
 
@@ -156,13 +167,14 @@ io.on("connection", (socket) => {
             winner: null,
             reason: 'Stalemate'
           });
-        } else if (game.chess.insufficient_material()) {
+        } else if (game.chess.isInsufficientMaterial() || 
+                   (game.chess.isInsufficientMaterial('w') && game.chess.isInsufficientMaterial('b'))) {
           io.to(roomId).emit('gameEnd', {
             result: 'draw',
             winner: null,
             reason: 'Insufficient material'
           });
-        } else if (game.chess.in_threefold_repetition()) {
+        } else if (game.chess.isThreefoldRepetition()) {
           io.to(roomId).emit('gameEnd', {
             result: 'draw',
             winner: null,

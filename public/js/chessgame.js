@@ -4,7 +4,7 @@ const boardElement = document.querySelector('.chessboard');
 let draggedPiece = null;   // changed const → let so it can be reassigned
 let sourceSquare = null;   // changed const → let so it can be reassigned
 let playerRole = null;
- // Assuming friendName is defined in your context
+let lastMove = null;  // Track the last move globally
 let initialBoardReady = false;
 
 
@@ -19,7 +19,7 @@ socket.on('boardState', (fen) => {
     if (playerRole) renderBoard();
 });
 
-const renderBoard = () => {
+const renderBoard = (target) => {
     const board = chess.board();
     boardElement.innerHTML = '';
 
@@ -39,7 +39,12 @@ const renderBoard = () => {
             );
             squareElement.dataset.row = rowIndex;
             squareElement.dataset.col = colIndex;
-
+            
+            // Use either target or lastMove for highlighting
+            if ((target && target.row === rowIndex && target.col === colIndex) ||
+                (lastMove && lastMove.row === rowIndex && lastMove.col === colIndex)) {
+                squareElement.classList.add('lastmove');
+            }
             if (square) {
                 const pieceElement = document.createElement('div');
                 const colorClass = square.color === 'w' ? 'white' : 'black';
@@ -75,6 +80,7 @@ const renderBoard = () => {
                 });
 
                 squareElement.appendChild(pieceElement);
+
             }
 
             // Allow drop
@@ -106,7 +112,8 @@ const handleMove = (source, target) => {
     };
     socket.emit('move', move);
     chess.move(move);
-    renderBoard();
+    lastMove = target;  // Store the last move
+    renderBoard(lastMove);
 };
 
 const getPieceUnicode = (piece) => {
@@ -123,11 +130,16 @@ const getPieceUnicode = (piece) => {
 
 socket.on('move', (move) => {
     chess.move(move);
-    renderBoard();
+    lastMove = {
+        row: 8 - parseInt(move.to[1]),
+        col: move.to.charCodeAt(0) - 97
+    };
+    renderBoard(lastMove);
 });
 
 socket.on('resetBoard', (initialFen) => {
     chess.load(initialFen);
+    lastMove = null;  // Clear the last move when board resets
     renderBoard();
 });
 socket.on('playerDisconnected', (socketId) => {
@@ -154,7 +166,7 @@ socket.on('gameEnd', ({ result, winner, reason }) => {
 
 socket.on('connected', (data) => {
     const playerconnected = document.getElementsByClassName('right-side-message')[0];
-    playerconnected.innerText = ` ${ data} has connected, its now you vs him !!!`;
+    playerconnected.innerText = ` ${data} has connected, its now you vs him !!!`;
 });
 
 
