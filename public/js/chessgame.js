@@ -7,8 +7,6 @@ let playerRole = null;
 let lastMove = null;  // Track the last move globally
 let initialBoardReady = false;
 
-
-
 socket.on('playerRole', (role) => {
     playerRole = role;
     if (initialBoardReady) renderBoard();
