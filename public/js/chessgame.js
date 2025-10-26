@@ -6,8 +6,7 @@ let sourceSquare = null;   // changed const → let so it can be reassigned
 let playerRole = null;
 let lastMove = null;  // Track the last move globally
 let initialBoardReady = false;
-// Ensure socket.io client connects to the same origin (Render will serve both client and server)
-const socket = io();
+
 
 
 socket.on('playerRole', (role) => {
