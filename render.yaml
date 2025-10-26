@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: chessnd-web
+    env: node
+    plan: free
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars: []
