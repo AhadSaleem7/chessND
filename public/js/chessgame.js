@@ -110,9 +110,6 @@ const handleMove = (source, target) => {
         promotion: 'q' // Always promote to queen for simplicity
     };
     socket.emit('move', move);
-    chess.move(move);
-    lastMove = target;  // Store the last move
-    renderBoard(lastMove);
 };
 
 const getPieceUnicode = (piece) => {
